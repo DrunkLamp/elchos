@@ -12,9 +12,16 @@ echo 1536 > /sys/block/sdb/queue/read_ahead_kb
 echo 1024 > /sys/block/sda/queue/nr_requests
 echo 1024 > /sys/block/sdb/queue/nr_requests
 
+hdparm -S 100 /dev/sda
+hdparm -S 100 /dev/sdb
+
+hdparm -y /dev/sda
+hdparm -y /dev/sdb
+
 logger "starting proftpd"
 for i in proftpd.conf  proftpd-sda.conf  proftpd-sdb.conf;do
   proftpd -c "/etc/$i"
 done
-
+logger "creating index if not existing"
+/usr/bin/elchos-create-index
 exit 0
