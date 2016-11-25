@@ -1,3 +1,7 @@
+# elchhub
+
+elchhub source code resides in https://github.com/krebscode/elchhub
+
 - high availablity hub:
   * https://github.com/krebscode/minikrebs/tree/master/traits/special_purpose/keepalive-hub
   * https://github.com/makefu/openwrt-custom-builder
