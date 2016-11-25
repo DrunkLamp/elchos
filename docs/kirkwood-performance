@@ -1,0 +1,35 @@
+
+
+ubuntu1604 1485881344 bytes
+features: ^has_journal,extent
+
+ext4 barrier=1
+proftp: 80.99
+
+ext4 barrier=0
+proftp: 82.14
+
+ext4 barrier=0,data=ordered
+proftp: 80.89
+
+ex4 barrier=1,data=writeback
+proftp: 79.98
+
+ext4 barrier=1,data=writeback
+proftp: 79.92
+READ
+
+proftp:     77.29 MB/s
+vsftpd:     74.21 MB/s
+pure-ftpd:  44.52 MB/s
+
+
+ext2
+proftp:  84.9 / 36s
+vsftp:   84.0 / 37s
+ncdc:    66.0 / 46s
+
+echo 1536 > /sys/block/sda/queue/read_ahead_kb
+proftp:  92.0 / 33s
+vsftp:   92.0 / 33s
+ncdc:    69.0 / 40s

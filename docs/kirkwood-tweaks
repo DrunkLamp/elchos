@@ -1,0 +1,39 @@
+echo noop > /sys/block/sda/queue/scheduler 
+echo 1024 > /sys/block/sda/device/max_sectors
+echo 1024 > /sys/block/sda/queue/nr_requests
+echo 1536 > /sys/block/sda/queue/read_ahead_kb
+
+
+mount: noatime,data=writeback,barrier=0,nobh
+
+
+hdparm -Tt /dev/sda
+
+/dev/sda:
+ Timing cached reads:   410 MB in  2.01 seconds = 204.30 MB/sec
+ Timing buffered disk reads: 344 MB in  3.00 seconds = 114.60 MB/sec
+
+
+# ext2:
+## defaults
+/sys/block/sda/queue/read_ahead_kb 128
+
+root@elch_604:/mnt/sda1# dd if=/dev/zero of=./1g bs=64k count=100000
+100000+0 records in
+100000+0 records out
+6553600000 bytes (6.6 GB) copied, 95.6316 s, 68.5 MB/s
+
+root@elch_604:/mnt/sda1# dd if=1g of=/dev/null bs=64k
+10000+0 records in
+10000+0 records out
+655360000 bytes (655 MB) copied, 5.49412 s, 119 MB/s
+
+## readahead
+echo 1536 > /sys/block/sda/queue/read_ahead_kb
+
+dd if=1g of=/dev/null bs=64k
+10000+0 records in
+10000+0 records out
+655360000 bytes (655 MB) copied, 5.02834 s, 130 MB/s
+
+# ext3:
