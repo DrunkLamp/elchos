@@ -1,0 +1,12 @@
+#!/bin/sh
+# elchos-create-index (refresh)
+# if $1 equals 'refresh', overwrite an index if already existing
+for i in /mnt/sda1 /mnt/sdb1;do
+	cd $i
+	if test ! -e index.xz -o "$1" == "refresh";then
+		echo "${1:-create} index for $i"
+		find -printf "%s %y %p\n" | XZ_DEFAULTS=--memlimit=100MiB xz -9 > index.xz
+	else
+		echo "not overwriting index"
+	fi
+done
