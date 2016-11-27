@@ -12,11 +12,8 @@ echo 1536 > /sys/block/sdb/queue/read_ahead_kb
 echo 1024 > /sys/block/sda/queue/nr_requests
 echo 1024 > /sys/block/sdb/queue/nr_requests
 
-hdparm -S 100 /dev/sda
-hdparm -S 100 /dev/sdb
-
-hdparm -y /dev/sda
-hdparm -y /dev/sdb
+logger "setting sleeop for disks"
+hd-idle  -i 0 -a sda -i 300 -a sdb -i 300
 
 logger "starting proftpd"
 for i in proftpd.conf  proftpd-sda.conf  proftpd-sdb.conf;do
@@ -24,4 +21,6 @@ for i in proftpd.conf  proftpd-sda.conf  proftpd-sdb.conf;do
 done
 logger "creating index if not existing"
 /usr/bin/elchos-create-index
+hdparm -y /dev/sda
+hdparm -y /dev/sdb
 exit 0
