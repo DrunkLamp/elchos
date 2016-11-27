@@ -1,0 +1,9 @@
+#!/bin/sh
+. /lib/functions/network.sh
+port1=2121
+port2=2122                
+network_get_ipaddr ip wan
+curl -H "Content-Type: application/json" https://search.nsupdate.info/api/node/${ip}:${port1} -k -XDELETE
+echo
+curl -H "Content-Type: application/json" https://search.nsupdate.info/api/node/${ip}:${port2} -k -XDELETE
+echo
