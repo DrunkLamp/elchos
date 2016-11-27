@@ -1,13 +1,21 @@
 #!/bin/sh
 . /lib/functions/network.sh
 port1=2121
-port2=2122                
-stats=$(sar -n DEV 1 3 | grep Average |grep eth0 | awk -F " " '{print ("\"net-rx\":" $5 ",\"net-tx\":" $6 )}')
+port2=2122
+netio=$(sar -n DEV 1 3 | grep Average |grep eth0 | awk -F " " '{print ($5 "," $6 )}')
+rx=$(echo $netio | cut -d, -f 1)
+tx=$(echo $netio | cut -d, -f 2)
+stats=$(printf  '"net-rx":"%s","net-tx":"%s"' "$rx" "$tx" )
 stats=$(printf '%s,"load":%s' "${stats}" "$(cut -d\  -f1 /proc/loadavg)")
-stats=$(printf '%s,"cpu":%s' "${stats}" "$(sar 1 3 | grep Average | awk -F " " '{print (100 - $8)}')")
+cpustat=$(sar 1 3 | grep Average | awk -F " " '{print (100 - $8)}')
+echo "$cpustat" > /tmp/state/cpu
+echo "$rx" > /tmp/state/net-rx
+echo "$tx" > /tmp/state/net-tx
+stats=$(printf '%s,"cpu":%s' "${stats}" "$cpustat")
 network_get_ipaddr ip wan
 echo '{"IP":"'$ip'","PORT":"'$port1'",'$stats'}'
 curl -H "Content-Type: application/json" https://search.nsupdate.info/api/ping -k -XPOST -d '{"IP":"'$ip'","PORT":"'$port1'",'$stats'}'
 echo
 curl -H "Content-Type: application/json" https://search.nsupdate.info/api/ping -k -XPOST -d '{"IP":"'$ip'","PORT":"'$port2'",'$stats'}'
 echo
+elchos-change-leds

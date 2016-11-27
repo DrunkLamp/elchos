@@ -1,0 +1,19 @@
+#!/bin/sh
+
+for i in `seq 0 3`;do
+	limit=$((($i+1)*20))
+	if [ "$(cat /tmp/state/cpu | cut -d. -f 1)" -gt "$limit" ];then
+		#echo "left $i is on"
+		echo  1 > /sys/class/leds/status:white:left${i}/brightness
+	else
+		#echo "left $i is off"
+		echo  0 > /sys/class/leds/status:white:left${i}/brightness
+	fi
+	if [ "$(cat /tmp/state/net-tx | cut -d. -f 1)" -gt "$limit" ];then
+		#echo "right $i is on"
+		echo  1 > /sys/class/leds/status:white:right${i}/brightness
+	else
+		#echo "right $i is off"
+		echo  0 > /sys/class/leds/status:white:right${i}/brightness
+	fi
+done
