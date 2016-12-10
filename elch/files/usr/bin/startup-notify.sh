@@ -11,4 +11,4 @@ while test -z "$ip"; do
 done
 
 ext_ip=$(wget -qO- http://ipv4.nsupdate.info/myip)
-irc-announce "Why hello there, this is $HOSTNAME. My WAN ip is $ip, my external ip is $ext_ip. Uptime $(uptime | cut -d\  -f4- |cut -d, -f1 )"
+irc-announce "Why hello there, this is $HOSTNAME. My WAN ip is $ip, my external ip is $ext_ip. Running elchOS version $(uci get elchos.core.version)@$(uci get elchos.core.builddate)"
