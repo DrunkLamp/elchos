@@ -8,7 +8,6 @@
 # improve performance to 130mb/s
 echo 1536 > /sys/block/sda/queue/read_ahead_kb
 echo 1536 > /sys/block/sdb/queue/read_ahead_kb
-# does nothing when single thread?
 echo 1024 > /sys/block/sda/queue/nr_requests
 echo 1024 > /sys/block/sdb/queue/nr_requests
 

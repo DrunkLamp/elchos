@@ -14,8 +14,8 @@ echo "$tx" > /tmp/state/net-tx
 stats=$(printf '%s,"cpu":%s' "${stats}" "$cpustat")
 network_get_ipaddr ip wan
 echo '{"IP":"'$ip'","PORT":"'$port1'",'$stats'}'
-curl -H "Content-Type: application/json" https://search.nsupdate.info/api/ping -k -XPOST -d '{"IP":"'$ip'","PORT":"'$port1'",'$stats'}'
+curl -H "Content-Type: application/json" https://search.nsupdate.info/api/ping -k -m 20 -XPOST -d '{"IP":"'$ip'","PORT":"'$port1'",'$stats'}'
 echo
-curl -H "Content-Type: application/json" https://search.nsupdate.info/api/ping -k -XPOST -d '{"IP":"'$ip'","PORT":"'$port2'",'$stats'}'
+curl -H "Content-Type: application/json" https://search.nsupdate.info/api/ping -k -m 20 -XPOST -d '{"IP":"'$ip'","PORT":"'$port2'",'$stats'}'
 echo
 elchos-change-leds
