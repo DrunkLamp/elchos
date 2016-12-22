@@ -11,10 +11,13 @@ while test -z "$ip"; do
 done
 
 # refresh logip
+hn=log.nsupdate.info
 logip=$(nslookup $hn | grep -A1 $hn | grep Address | cut -d\  -f 3)
 uci set system.@system[0].log_ip=${logip}
 uci commit
 logger "refreshing log_ip: ${logip}"
+/etc/init.d/log restart
+/etc/init.d/cron restart
 
 # announce
 ext_ip=$(wget -qO- http://ipv4.nsupdate.info/myip)

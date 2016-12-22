@@ -1,3 +1,4 @@
 #!/bin/sh
 
-opkg install --force-overwrite /pkgs/* && rm -f  /pkgs
+opkg install --force-overwrite /pkgs/*
+rm -rf  /pkgs

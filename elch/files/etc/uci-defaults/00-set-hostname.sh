@@ -7,14 +7,18 @@ fi
 
 mapped_id=$(grep  "$(hostid)" /etc/elchmap | awk '{print $2}')
 if [ -n "$mapped_id" ];then
-  hn=elch_${mapped_id}
+  hn=elch-${mapped_id}
   uci set elchos.core.elchid=${mapped_id}
 else
-  hn=elch_$(hostid | cut -c1-3 )
+  hn=elch-$(hostid | cut -c1-3 )
 fi
 
 uci set system.@system[0].hostname=$hn
+# collectd uses gethostname(2)
 uci commit
+sed -i "s/^Hostname .*/Hostname $hn/" /etc/collectd.conf
+/etc/init.d/collectd stop
+/etc/init.d/collectd start
 # add the hostname to /etc/hosts for proftpd to stop whining
 sed -i "s/^127\.0\.0\.1.*/127.0.0.1 $hn localhost/" /etc/hosts
 rm -f /etc/elchmap
